@@ -1,37 +1,63 @@
 import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, TextInput, Alert } from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+  StyleSheet,
+} from 'react-native';
 
 const WheelTasks = () => {
   const [inputText, setInputText] = useState('');
-  
-  const spinWheel = () => {
-    if(!inputText){
-        Alert.alert('Error', 'Please enter something to spin');
-        return;
 
+  const spinWheel = () => {
+    if (!inputText) {
+      Alert.alert('Error', 'Please enter something to spin');
+      return;
     }
-  }
-  
-  
+  };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <TextInput
-        style={{
-          height: 40,
-          borderColor: ' gray',
-          borderWidth: 1,
-          marginBottom: 20,
-          paddingHorizontal: 10,
-        }}
+    <View style={styles.container}>
+    <TextInput
+        style={styles.input}
         placeholder=" Enter Task Here"
         value={inputText}
-        onChange={(text) => setInputText(text)}
+        onChangeText={(text) => setInputText(text)}
       />
-
-      <TouchableOpacity onPress={spinWheel}></TouchableOpacity>
+         <TouchableOpacity onPress={spinWheel}>
+        <View style={styles.button}>
+          <Text style={styles.buttonText}>Add Task</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+  },
+  input: {
+    height: 30,
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  }, 
+
+  button: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+   
+  },
+
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+});
 
 export default WheelTasks;

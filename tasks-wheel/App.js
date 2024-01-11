@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-//import WheelTasks from './wheel/WheelTasks.js';
+import WheelTasks from './wheel/WheelTasks.js';
 import SpinningWheel from './wheel/SpinningWheel';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 export default function App() {
+  const handleSpinPress = (task) => {
+    console.log('Spinning wheel with task: ${task}');
+  };
+
   return (
-    <GestureHandlerRootView>
-      <View style={styles.container}>
-        <SpinningWheel />
-        {/* <WheelTasks /> */}
-      </View>
+    <GestureHandlerRootView style={styles.container}>
+      <WheelTasks onSpinPress={handleSpinPress} />
+
+      <SpinningWheel onSpinPress={handleSpinPress} />
     </GestureHandlerRootView>
   );
 }
@@ -21,5 +24,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     text: 'center',
+    top: 130,
   },
 });

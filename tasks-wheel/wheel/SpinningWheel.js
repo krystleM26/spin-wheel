@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Svg, { Circle, Text as SvgText } from 'react-native-svg';
 import {
   GestureHandlerRootView,
@@ -10,13 +10,11 @@ import {
 const SpinningWheel = () => {
   const wheelRef = useRef(null);
 
-  const onWheelPan = (event) => {
-    const { translationX, translationY, state } = event.nativeEvent;
-  };
+  const onWheelPan = (event) => {};
 
   return (
     <GestureHandlerRootView>
-      <View>
+      <View stlye={styles.container}>
         <PanGestureHandler onGestureEvent={onWheelPan}>
           <Svg width={300} height={300}>
             <Circle cx={150} cy={150} r={140} fill="yellow" />
@@ -26,17 +24,37 @@ const SpinningWheel = () => {
               fontSize={20}
               textAnchor="middle"
               fill="black"
+              top={50}
             >
               Spin me!
             </SvgText>
           </Svg>
         </PanGestureHandler>
-        <TouchableOpacity onPress={() => console.log('Spin button pressed')}>
-          <Text>Spin</Text>
+        <TouchableOpacity onPress={() => onSpinPress('Default Task')}>
+          <View style={styles.spinButton}>
+            <Text>Spin</Text>
+          </View>
         </TouchableOpacity>
       </View>
     </GestureHandlerRootView>
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  spinButton: {
+    marginTop: 20,
+    backgroundColor: 'green',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
 export default SpinningWheel;
+
