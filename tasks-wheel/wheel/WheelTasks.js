@@ -8,28 +8,31 @@ import {
   StyleSheet,
 } from 'react-native';
 
-const WheelTasks = () => {
+const WheelTasks = ({ onAddTask }) => {
   const [inputText, setInputText] = useState('');
 
-  const spinWheel = () => {
+  const addTasks = () => {
     if (!inputText) {
-      Alert.alert('Error', 'Please enter something to spin');
+      Alert.alert('Error', 'Please Add Tasks');
       return;
     }
+
+    onAddTask(inputText);
+
+    setInputText('');
   };
 
   return (
     <View style={styles.container}>
-    <TextInput
+      <TextInput
         style={styles.input}
         placeholder=" Enter Task Here"
         value={inputText}
         onChangeText={(text) => setInputText(text)}
       />
-         <TouchableOpacity onPress={spinWheel}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>Add Task</Text>
-        </View>
+
+      <TouchableOpacity style={styles.button} onPress={addTasks}>
+        <Text style={styles.buttonText}>Add Task</Text>
       </TouchableOpacity>
     </View>
   );
@@ -44,13 +47,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 10,
     marginBottom: 10,
-  }, 
+  },
 
   button: {
     backgroundColor: 'blue',
     padding: 10,
     borderRadius: 5,
-   
   },
 
   buttonText: {

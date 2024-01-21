@@ -1,101 +1,78 @@
 import React, { useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import Svg, { Circle, Text as SvgText, G, Path } from 'react-native-svg';
 import {
-  GestureHandlerRootView,
-  PanGestureHandler,
-  State,
-} from 'react-native-gesture-handler';
+  Image,
+  PanResponder,
+  StyleSheet,
+  Text,
+  View,
+  Animated,
+} from 'react-native';
+
+import arrow from '../images/arrow-down.png';
+import spinWheel from '../images/Spinning-Wheel-Vector-PNG-File.png';
 
 const SpinningWheel = () => {
-  const wheelRef = useRef(null);
+  // animated value to rotate the wheel
 
-  const onWheelPan = (event) => {};
+  const rotateValue = useRef(new Animated.Value(0)).current; // useRef makes it always the same value
 
-  const launchSegments = () => {
-    const numOfSegments = 5;
-    const angle = (2 * Math.PI) / numOfSegments;
-
-    const segments = [];
-    for (let i = 0; i < numOfSegments; i++) {
-      const startAngle = i * angle;
-      const endAngle = (i + 1) * angle;
-
-      const pathData = `
-        M 150 150 
-        L ${150 + 140 * Math.cos(startAngle)} ${
-        150 + 140 * Math.sin(startAngle)
-      }
-        A 140 140 0 0 1 ${150 + 140 * Math.cos(endAngle)} ${
-        150 + 140 * Math.sin(endAngle)
-      }
-        Z
-        `;
-
-      segments.push(
-        <Path
-          d={pathData}
-          cx={150}
-          cy={150}
-          r={140}
-          fill={`hsl(${(i * 360) / numOfSegments}, 50%, 70%)`}
-        />
-      );
-    }
-    return segments;
-  };
+  //Allows you to swipe the circle
+  const panResponder = PanResponder.create({
+    onMoveShouldSetPanResponder: () => true,
+    onPanResponderMove: (
+      event: GestureResponderEvent,
+      gestureState: PanResponderGestureState
+    ) => {
+      rotateValue.setValue(gestureState.dy);
+      // console.warn(gestureState.dy); //For Testing
+    },
+  });
+  // map the num of pixels to the rotation num of degree
+  const spinnerRotation = rotateValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '1deg'],
+  });
+  //interpolate is a function
 
   return (
-    <GestureHandlerRootView>
-      <View style={styles.container}>
-        <PanGestureHandler onGestureEvent={onWheelPan}>
-          <Svg width={300} height={300}>
-            <G>
-              {launchSegments()}
-              <Circle
-                cx={150}
-                cy={150}
-                r={55}
-                fill="grey"
-                stroke="white"
-                strokeWidth={1.5}
-              />
-              <SvgText
-                x={150}
-                y={150}
-                fontSize={20}
-                textAnchor="middle"
-                fill="white"
-                top={19}
-              >
-                Spin me!
-              </SvgText>
-            </G>
-          </Svg>
-        </PanGestureHandler>
-        <TouchableOpacity onPress={() => onSpinPress('Default Task')}>
-          <View style={styles.spinButton}>
-            <Text>Spin</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    </GestureHandlerRootView>
+    <View style={styles.container}>
+      <Text style={styles.header}>Spin For Tasks</Text>
+      <Image source={arrow} style={styles.arrow} />
+
+      <Animated.Image
+        source={spinWheel}
+        style={[styles.spinWheel, { transform: [{ rotate: spinnerRotation }] }]} //add rotation to image and will start to see image spine// }
+        {...panResponder.panHandlers}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.8)',
     alignItems: 'center',
+    justifyContent: 'center',
   },
-  spinButton: {
-    marginTop: 20,
-    backgroundColor: 'green',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
+  arrow: {
+    // color: '#FF0000',
+    width: 52,
+    height: 52,
+  },
+  header: {
+    color: '#fff',
+    fontSize: 20,
+    textAlign: 'center',
+    // fontWeight: 'bold',
+    letterSpacing: 4,
+    textShadowColor: '#fff',
+    textShadowRadius: 6,
+  },
+  spinWheel: {
+    width: 400,
+    height: 400,
+    resizeMode: 'contain',
   },
 });
 

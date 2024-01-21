@@ -12,7 +12,7 @@ export default function App() {
     <GestureHandlerRootView style={styles.container}>
       <WheelTasks onSpinPress={handleSpinPress} />
 
-      <SpinningWheel onSpinPress={handleSpinPress} />
+      <SpinningWheel />
     </GestureHandlerRootView>
   );
 }
