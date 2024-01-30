@@ -1,19 +1,36 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import WheelTasks from './wheel/WheelTasks.js';
-import SpinningWheel from './wheel/SpinningWheel';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+// import SpinningWheel from './wheel/SpinningWheel';
+
+import SpinWheel from './wheel/SpinWheel.js';
+
 export default function App() {
-  const handleSpinPress = (task) => {
-    console.log('Spinning wheel with task: ${task}');
+  const [tasks, setTasks] = useState([
+  
+  ]);
+ 
+
+ 
+  const handleTasks = (newTask) => {
+    if (tasks.length > 5) {
+      tasks.shift(); // Remove the first element
+      
+    }
+    tasks.push(newTask);
+    setTasks([...tasks]); // Update state with the modified data
+    console.log(tasks)
   };
 
-  return (
-    <GestureHandlerRootView style={styles.container}>
-      <WheelTasks onSpinPress={handleSpinPress} />
+  console.log(tasks)
 
-      <SpinningWheel />
-    </GestureHandlerRootView>
+  return (
+    <View style={styles.container}>
+      <WheelTasks onAddTask={handleTasks} />
+      <SpinWheel data={tasks}  />
+     
+     
+    </View>
   );
 }
 
@@ -24,6 +41,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     text: 'center',
-    top: 130,
+    // top: 130,
   },
 });

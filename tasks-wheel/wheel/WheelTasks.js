@@ -10,6 +10,7 @@ import {
 
 const WheelTasks = ({ onAddTask }) => {
   const [inputText, setInputText] = useState('');
+  const[ tasks, setTasks] = useState([])
 
   const addTasks = () => {
     if (!inputText) {
@@ -17,10 +18,11 @@ const WheelTasks = ({ onAddTask }) => {
       return;
     }
 
-    onAddTask(inputText);
+    setTasks([...tasks, inputText])
 
     setInputText('');
   };
+  console.log(tasks)
 
   return (
     <View style={styles.container}>
@@ -34,6 +36,7 @@ const WheelTasks = ({ onAddTask }) => {
       <TouchableOpacity style={styles.button} onPress={addTasks}>
         <Text style={styles.buttonText}>Add Task</Text>
       </TouchableOpacity>
+      
     </View>
   );
 };

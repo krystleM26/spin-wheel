@@ -28,11 +28,11 @@ const SpinningWheel = () => {
     },
   });
   // map the num of pixels to the rotation num of degree
+  //interpolate is a function
   const spinnerRotation = rotateValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '1deg'],
   });
-  //interpolate is a function
 
   return (
     <View style={styles.container}>
